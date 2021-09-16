@@ -129,7 +129,7 @@ class _DatePickerState extends State<DatePicker> {
 
     super.initState();
 
-    WidgetsBinding?.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       _controller.position.isScrollingNotifier.addListener(() {
         if (!_controller.position.isScrollingNotifier.value) {
           int dateIndex = _controller.position.pixels ~/ (widget.width + 5.0);
