@@ -129,7 +129,7 @@ class _DatePickerState extends State<DatePicker> {
 
     super.initState();
 
-    WidgetsBinding?.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       _controller.position.addListener(() {
         int dateIndex = _controller.position.pixels ~/ (widget.width + 5.0);
         widget.scrollDateTime!(widget.startDate.add(Duration(days: dateIndex)));
