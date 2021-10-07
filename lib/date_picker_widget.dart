@@ -140,6 +140,12 @@ class _DatePickerState extends State<DatePicker> {
     });
   }
 
+  void switchSelectedDate(DateTime dateTime) {
+    setState(() {
+      _currentDate = dateTime;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -247,6 +253,12 @@ class DatePickerController {
     // jump to the current Date
     _datePickerState!._controller
         .jumpTo(_calculateDateOffset(_datePickerState!._currentDate!));
+  }
+
+  void changeSelectedDate(DateTime dateTime) {
+    if (dateTime == null) return;
+    animateToDate(dateTime);
+    _datePickerState!.switchSelectedDate(dateTime);
   }
 
   /// This function will animate the Timeline to the currently selected Date
