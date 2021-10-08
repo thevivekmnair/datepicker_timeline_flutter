@@ -151,6 +151,7 @@ class _DatePickerState extends State<DatePicker> {
     return Container(
       height: widget.height,
       child: ListView.builder(
+        physics: ClampingScrollPhysics(),
         itemCount: widget.daysCount,
         scrollDirection: Axis.horizontal,
         controller: _controller,
