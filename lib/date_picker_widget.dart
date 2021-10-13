@@ -129,7 +129,7 @@ class _DatePickerState extends State<DatePicker> {
 
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
       _controller.position.isScrollingNotifier.addListener(() {
         if (!_controller.position.isScrollingNotifier.value) {
           int dateIndex = _controller.position.pixels ~/ (widget.width + 5.0);
@@ -137,6 +137,10 @@ class _DatePickerState extends State<DatePicker> {
               .scrollDateTime!(widget.startDate.add(Duration(days: dateIndex)));
         }
       });
+
+      /// Go to the end of listview (Today's date)
+      await Future.delayed(Duration(milliseconds: 250));
+      if (mounted) _controller.jumpTo(_controller.position.maxScrollExtent);
     });
   }
 
