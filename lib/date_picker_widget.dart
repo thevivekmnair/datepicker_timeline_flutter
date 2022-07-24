@@ -217,6 +217,7 @@ class _DatePickerState extends State<DatePicker> {
             locale: widget.locale,
             selectionColor:
                 isSelected ? widget.selectionColor : Colors.transparent,
+            isSelected: isSelected,
             onDateSelected: (selectedDate) {
               // Don't notify listener if date is deactivated
               if (isDeactivated) return;

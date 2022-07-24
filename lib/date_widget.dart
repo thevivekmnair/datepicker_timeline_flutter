@@ -16,6 +16,7 @@ class DateWidget extends StatelessWidget {
   final Color selectionColor;
   final DateSelectionCallback? onDateSelected;
   final String? locale;
+  final bool isSelected;
 
   DateWidget({
     required this.date,
@@ -26,41 +27,68 @@ class DateWidget extends StatelessWidget {
     this.width,
     this.onDateSelected,
     this.locale,
+    this.isSelected = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        width: width,
-        margin: EdgeInsets.all(3.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          color: selectionColor,
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(new DateFormat("MMM", locale).format(date).toUpperCase(), // Month
-                  style: monthTextStyle),
-              Text(date.day.toString(), // Date
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            // Check if onDateSelected is not null
+            if (onDateSelected != null) {
+              // Call the onDateSelected Function
+              onDateSelected!(this.date);
+            }
+          },
+          child: Container(
+            width: width,
+            height: width,
+            margin: EdgeInsets.all(3.0),
+            decoration: BoxDecoration(
+              color: isSelected ? Color(0xff5524E5) : Color(0xffF2F2F2),
+              shape: BoxShape.circle,
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 2,
+                        offset: Offset(0, 0),
+                      ),
+                    ]
+                  : [],
+              border: Border.all(
+                color: isSelected
+                    ? Colors.transparent
+                    : Color(0xff5B5B5B).withOpacity(.2),
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Text("${date.day}.${date.month}.", // Date
                   style: dateTextStyle),
-              Text(new DateFormat("E", locale).format(date).toUpperCase(), // WeekDay
-                  style: dayTextStyle)
-            ],
+            ),
           ),
         ),
-      ),
-      onTap: () {
-        // Check if onDateSelected is not null
-        if (onDateSelected != null) {
-          // Call the onDateSelected Function
-          onDateSelected!(this.date);
-        }
-      },
+        SizedBox(
+          height: 1,
+        ),
+        Text(
+          new DateFormat("E", locale).format(date).toTitleCase(), // WeekDay
+          style: dayTextStyle?.copyWith(color: Colors.black),
+        )
+      ],
     );
   }
+}
+
+extension StringCasingExtension on String {
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
+      .split(' ')
+      .map((str) => str.toCapitalized())
+      .join(' ');
 }
